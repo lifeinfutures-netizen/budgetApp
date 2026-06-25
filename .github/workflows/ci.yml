@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run tests with coverage
+        run: python -m pytest --cov=budget --cov-report=term-missing --cov-fail-under=100
+
+      - name: Check cyclomatic complexity report
+        run: python -m radon cc -s budget tests
+
+      - name: Enforce complexity grade
+        run: python -m xenon --max-absolute B --max-modules B --max-average B budget tests
+
+      - name: Run style checks
+        run: python -m flake8 budget tests
