@@ -1,0 +1,4 @@
+interface:
+  display_name: "Budget CLI Development"
+  short_description: "Build and review the CSV budget CLI with TDD and quality gates."
+  default_prompt: "Use $budget-cli-development to implement a CSV budget CLI feature with tests and quality checks."
